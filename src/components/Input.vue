@@ -10,8 +10,17 @@ const socket = io("http://localhost:3000", { path: "/chat" });
 
 export default {
   name: "Input",
-  props: {},
-  setup(_, { emit }) {
+  props: {
+    username: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props) {
     // Data
     //this is a reactive variable
     //it will trigger a re-render when it changes
@@ -26,8 +35,11 @@ export default {
 
     // Methods
     const sendMessage = () => {
-      //this emit will send the message to the parent component
-      socket.emit("chat message", message.value);
+      socket.emit("chat message", {
+        username: props.username,
+        color: props.color,
+        message: message.value,
+      });
       message.value = "";
     };
 

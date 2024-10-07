@@ -1,7 +1,9 @@
 <template>
   <div>
     <div v-for="(msg, index) in messages" :key="index">
-      {{ msg }}
+      <span :style="{ color: msg.color }"
+        >{{ msg.username }}: {{ msg.message }}</span
+      >
     </div>
   </div>
 </template>
