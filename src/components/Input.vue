@@ -1,5 +1,9 @@
 <template>
-  <input v-model="message" @keyup.enter="sendMessage" />
+  <input
+    v-model="message"
+    @keyup.enter="sendMessage"
+    placeholder="Insert Message"
+  />
 </template>
 
 <script>

@@ -22,8 +22,9 @@ export default {
       required: true,
     },
   },
-  setup() {
-    const messages = ref([]);
+  setup(props) {
+    console.log("MessageList setup", props.messages);
+    const messages = ref(props.messages);
 
     const addMessage = (msg) => {
       messages.value.push(msg);

@@ -12,6 +12,7 @@ export default {
       messages: [],
       username: "",
       color: "#000000",
+      isLoading: true,
     };
   },
   methods: {
@@ -23,25 +24,81 @@ export default {
       });
     },
   },
+
   created() {
     fetch("http://localhost:3000/messages")
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
         this.messages = data;
+        console.log("Messages loaded:", this.messages);
+        this.isLoading = false;
+      })
+      .catch((error) => {
+        console.error("Failed to load messages:", error);
       });
   },
 };
 </script>
 
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.message-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 85vh;
+  width: 80%;
+  background-color: #f8f8f8;
+}
+
+.input-area {
+  display: flex;
+  padding: 16px;
+  height: 10vh;
+  width: 80%;
+  background-color: #424242;
+}
+
+.username-input,
+.message-input,
+.color-picker {
+  margin-right: 10px;
+}
+
+.username-input,
+.color-picker {
+  flex-grow: 0.1;
+  height: 100%;
+  place-self: center;
+}
+
+.message-input {
+  flex-grow: 1;
+}
+</style>
+
 <template>
-  <div>
-    <input type="text" v-model="username" placeholder="Enter username" />
-    <input type="color" v-model="color" />
-    <MessageList :messages="messages" />
-    <Input
-      @message-sent="handleMessageSent"
-      :color="this.color"
-      :username="this.username"
-    />
+  <div class="container">
+    <div v-if="isLoading" class="message-list">Loading messages...</div>
+    <MessageList v-else :messages="messages" class="message-list" />
+    <div class="input-area">
+      <input
+        type="text"
+        v-model="username"
+        placeholder="Enter username"
+        class="username-input"
+      />
+      <Input
+        @message-sent="handleMessageSent"
+        :color="this.color"
+        :username="this.username"
+        class="message-input"
+      />
+      <input type="color" v-model="color" class="color-picker" />
+    </div>
   </div>
 </template>
